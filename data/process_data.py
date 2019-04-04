@@ -83,7 +83,7 @@ def clean_data(df):
        'weather_related', 'floods', 'storm', 'fire', 'earthquake', 'cold',
        'other_weather', 'direct_report'])
 
-     return df
+    return df
 
 def save_data(df, database_filename):
     """Saves the clean dataset into an sqlite database
