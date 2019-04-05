@@ -92,13 +92,7 @@ def build_model():
         n_estimators=100, min_samples_split=2)))
     ])
 
-    # Split data into train and test sets
-    X_train, X_test, Y_train, Y_test = train_test_split(X, Y)
-
-    # Train model
-    model = pipeline.fit(X_train, Y_train)
-
-    return model, X_test, Y_test
+    return model
 
 
 def evaluate_model(model, X_test, Y_test, category_names):
@@ -119,7 +113,8 @@ def evaluate_model(model, X_test, Y_test, category_names):
     Y_pred = model.predict(X_test)
 
     # Generate accuracy report
-    report = pd.DataFrame.from_dict(classification_report(Y_test, Y_pred, target_names=category_names, output_dict=True))
+    report = pd.DataFrame.from_dict(classification_report(Y_test, Y_pred,
+        target_names=category_names, output_dict=True))
     report = pd.DataFrame.transpose(report)
 
     return report
