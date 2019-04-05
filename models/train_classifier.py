@@ -85,7 +85,7 @@ def build_model():
 
     """
     # Build ML pipeline using random forest classifier
-    pipeline = Pipeline([
+    model = Pipeline([
         ('vect', CountVectorizer(tokenizer = tokenize)),
         ('tfidf', TfidfTransformer()),
         ('clf', MultiOutputClassifier(RandomForestClassifier(
