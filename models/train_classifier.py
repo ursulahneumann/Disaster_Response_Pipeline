@@ -80,9 +80,6 @@ def build_model():
 
     Returns:
         model: trained model
-        X_test: list - train-test split of inputs
-        Y_test: list - train-test split of inputs
-
     """
     # Build ML pipeline using random forest classifier
     model = Pipeline([
