@@ -7,7 +7,7 @@ from nltk.tokenize import word_tokenize
 
 from flask import Flask
 from flask import render_template, request, jsonify
-from plotly.graph_objs import Bar
+from plotly.graph_objs import Bar, Histogram
 from sklearn.externals import joblib
 from sqlalchemy import create_engine
 
@@ -38,13 +38,24 @@ model = joblib.load("../models/disaster_model.sav")
 @app.route('/index')
 def index():
 
-    # extract data needed for visuals
-    # TODO: Below is an example - modify to extract data for your own visuals
+    # extract data needed for graph 1
     genre_counts = df.groupby('genre').count()['message']
     genre_names = list(genre_counts.index)
 
+    # extract data needed for graph 2
+    category_means = []
+    for category in df.iloc[:,4:].columns:
+        category_means.append(df[category].mean())
+
+    df_means = pd.DataFrame(data={'categories': df.iloc[:,4:].columns,
+    'means': category_means})
+    df_means = df_means.sort_values(by=['means'], ascending=False)
+
+    # extract data needed for graph 3
+    df_cat = df.iloc[:,4:]
+    df_cat['sum'] = df_cat.sum(axis=1)
+
     # create visuals
-    # TODO: Below is an example - modify to create your own visuals
     graphs = [
         {
             'data': [
@@ -61,6 +72,43 @@ def index():
                 },
                 'xaxis': {
                     'title': "Genre"
+                }
+            }
+        },
+        {
+            'data': [
+                Bar(
+                    x=df_means['categories'],
+                    y=df_means['means']
+                )
+            ],
+
+            'layout': {
+                'title': 'Proportion of Positive Labels',
+                'yaxis': {
+                    'title': "Proportion (%)"
+                },
+                'xaxis': {
+                    'title': "",
+                    'tickangle': -45
+                }
+            }
+        }
+        ,
+        {
+            'data': [
+                Histogram(
+                    x=df_cat['sum']
+                )
+            ],
+
+            'layout': {
+                'title': 'Histogram of Number of Categories per Message',
+                'yaxis': {
+                    'title': "Frequency"
+                },
+                'xaxis': {
+                    'title': "Number of Categories"
                 }
             }
         }
