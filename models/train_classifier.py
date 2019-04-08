@@ -102,7 +102,7 @@ def evaluate_model(model, X_test, Y_test, category_names):
         Y_test: list - train-test split of inputs
         category_names: column names of Y df (cateegory names)
 
-    Returns:
+    Prints:
         report: dataframe - accuracy report
     """
 
@@ -114,7 +114,7 @@ def evaluate_model(model, X_test, Y_test, category_names):
         target_names=category_names, output_dict=True))
     report = pd.DataFrame.transpose(report)
 
-    return report
+    print(report)
 
 
 def save_model(model, model_filepath):
